@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,12 +34,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             BasicsCodelabTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    Greeting("BEEEAM")
-                }
+//                Surface(
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colorScheme.background,
+//                ) {
+//                    Greeting("BEEEAM")
+//                }
+                MyApp()
             }
         }
     }
@@ -61,7 +65,7 @@ fun OnboardingScreen(onContinueClick: () -> Unit) {
 
 @Composable
 fun MyApp() {
-    var onBoardingState by remember { mutableStateOf(true) }
+    var onBoardingState by rememberSaveable { mutableStateOf(true) }
 
     if (onBoardingState) {
         OnboardingScreen(onContinueClick = { onBoardingState = false })
@@ -72,11 +76,11 @@ fun MyApp() {
 
 @Composable
 fun Greetings() {
-    val name = listOf("BEEEAM", "JUN")
+    val names = List(100) { "$it" }
     Surface(modifier = Modifier.padding(vertical = 4.dp)) {
-        Column {
-            for (text in name) {
-                Greeting(text)
+        LazyColumn {
+            items(items = names) { name ->
+                Greeting(text = name)
             }
         }
     }
